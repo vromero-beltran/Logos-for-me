@@ -1,4 +1,4 @@
-const filesytem = require('fs');
+const fs = require('fs');
 const inquirer = require('inquirer'); 
 const { Circle, Square, Triangle } = require('./shapes');
 
@@ -30,24 +30,68 @@ const questions = [
     },
     {
         type: "input",
-        name: "text-color",
+        name: "textColor",
         message:'COLOR TEXT: Enter a color keyword (OR a hexadecimal number:)',
     },
     {
         type: "input",
-        name: "shape-color",
+        name: "shapeColor",
         message:"SHAPE COLOR: Enter a color keyword (OR a hexadecimal number:)",
     },
     {
         type: "list",
-        name: "pixal-image",
+        name: "pixalImage",
         message: "Select a shape:",
         choices: ["Circle", "Square", "Triangle"],
     },
 ];
 
-inquirer.prompt([...questions])
-    .then((answers)=>{
-        console.log(`Answers are as follows:\n${JSON.stringify(answers)}`);
-});
+async function generateLogo() {
+    // Prompt user for input
+    const answers = questions;
+    // Get values from answers
+    const { text, textColor, Shape, shapeColor } = answers;
+    // Create SVG instance
+    const svg = new Svg();
+    // Set text and color
+    svg.setTextElement(text, textColor);
+    // Create shape instance
+    let shapeElement;
+    if (Shape === 'Circle') {
+        shapeElement = new Circle();
+    } else if (Shape === 'Square') {
+        shapeElement = new Square();
+    } else {
+        shapeElement = new Triangle();
+    }
+    // Set shape color
+    shapeElement.setColor(shapeColor);
+    // Set shape on SVG
+    svg.setShapeElement(shapeElement);
+    // Render SVG code
+    const svgCode = svg.render();
+    // Write SVG file
+    fs.writeFileSync('logo.svg', svgCode);
+    // Log message
+    console.log('Generated logo.svg'); 
+}
+
+function writeToFile(fileName, questions) {
+    var content = generateLogo(questions);
+    fs.writeFile(fileName, content, function(error) {
+        if (!error){
+            return console.log(error);
+        }
+        console.log("Generated logo.svg");
+    });
+}
+
+function init() {
+    inquirer.prompt(questions).then(function (questions) {
+        var fileName = 'logo.svg';
+        writeToFile(fileName, questions);
+    })
+}
+
+init();
 
