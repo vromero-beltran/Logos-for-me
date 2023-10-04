@@ -46,7 +46,7 @@ const questions = [
     },
 ];
 
-async function generateLogo() {
+function generateLogo() {
     // Prompt user for input
     const answers = questions;
     // Get values from answers
@@ -76,10 +76,10 @@ async function generateLogo() {
     console.log('Generated logo.svg'); 
 }
 
-function writeToFile(fileName, questions) {
-    var content = generateLogo(questions);
+function writeToFile(fileName, data) {
+    var content = generateLogo(data);
     fs.writeFile(fileName, content, function(error) {
-        if (!error){
+        if (error){
             return console.log(error);
         }
         console.log("Generated logo.svg");
@@ -87,9 +87,9 @@ function writeToFile(fileName, questions) {
 }
 
 function init() {
-    inquirer.prompt(questions).then(function (questions) {
+    inquirer.prompt(questions).then(function (data) {
         var fileName = 'logo.svg';
-        writeToFile(fileName, questions);
+        writeToFile(fileName, data);
     })
 }
 
