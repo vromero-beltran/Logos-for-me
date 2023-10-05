@@ -6,8 +6,8 @@ describe('Circle', () => {
         var color = ('blue');
         shape.setColor(color);
         expect(shape.render()).toEqual(`<circle
-        cx="50" 
-        cy="50" 
+        cx="50%" 
+        cy="50%" 
         r="100" 
         fill="${color}"/>`);
     });
