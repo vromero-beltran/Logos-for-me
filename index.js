@@ -82,7 +82,7 @@ function generateLogo(data) {
   // Write SVG file
   fs.writeFileSync('logo.svg', svgCode);
    // Log message
-   console.log('Generated logo.svg');
+    console.log('Generated logo.svg');
 }
 
 function writeToFile(fileName, data) {
